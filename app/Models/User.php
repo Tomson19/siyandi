@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Contracts\Auth\MustVerifyEmail; // 👈 penting
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\QueueableVerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail // 👈 tambahin interface
 {
@@ -43,10 +44,18 @@ class User extends Authenticatable implements MustVerifyEmail // 👈 tambahin i
     {
         return [
             'email_verified_at' => 'datetime',
-            'password'          => 'hashed',  
+            'password'          => 'hashed',
             'is_locked'         => 'boolean',
             'locked_at'         => 'datetime',
         ];
+    }
+
+    // ==============================
+    // ✉️ Kirim email verifikasi via QUEUE
+    // ==============================
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new QueueableVerifyEmail());
     }
 
     // ==============================
@@ -74,8 +83,7 @@ class User extends Authenticatable implements MustVerifyEmail // 👈 tambahin i
     }
 
     public function pembinaanPenangkar()
-{
-    return $this->hasMany(\App\Models\PembinaanPenangkar::class);
-}
-
+    {
+        return $this->hasMany(\App\Models\PembinaanPenangkar::class);
+    }
 }
