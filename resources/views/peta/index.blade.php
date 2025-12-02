@@ -151,9 +151,12 @@
             </div>
 
             <div class="col-md-6">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold text-primary">Materi Genetik dan Koordinat Lokasi</h5>
-                    <div id="materiButtons" style="display: none;">
+                <div class="d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-sm-center">
+                    <h5 class="fw-bold text-primary mb-1 mb-sm-0 mt-2 mt-sm-0 me-sm-2 flex-grow-1">
+                        Materi Genetik dan Koordinat Lokasi
+                    </h5>
+
+                    <div id="materiButtons" class="d-flex flex-wrap gap-1" style="display: none;">
                         <a href="#" id="downloadMateriExcel" class="btn btn-success btn-sm">
                             <i class="bi bi-file-earmark-excel"></i> Excel
                         </a>
@@ -162,8 +165,10 @@
                         </a>
                     </div>
                 </div>
+
                 <div id="koordinatContent" class="border p-3 rounded bg-light mt-2"></div>
             </div>
+
         </div>
     </div>
 @endsection

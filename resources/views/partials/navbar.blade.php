@@ -194,21 +194,26 @@
             {{-- LOGIN BUTTON --}}
             <ul class="navbar-nav ms-lg-3">
                 <li class="nav-item">
-                    @auth
-                        <form action="{{ route('logout') }}" method="POST" class="d-inline">@csrf
-                            <button class="btn btn-light btn-sm fw-semibold px-3 text-success border border-success"
-                                type="submit">
-                                Logout
-                            </button>
-                        </form>
-                    @else
-                        <a class="btn btn-light btn-sm fw-semibold px-3 {{ request()->is('login') ? 'text-success border border-success' : '' }}"
-                            href="{{ route('login') }}">
-                            Login
-                        </a>
-                    @endauth
+                    <div class="d-grid d-lg-block">
+                        @auth
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline">@csrf
+                                <button
+                                    class="btn btn-light btn-sm fw-semibold px-3 text-success border border-success w-100 w-lg-auto"
+                                    type="submit">
+                                    Logout
+                                </button>
+                            </form>
+                        @else
+                            <a class="btn btn-light btn-sm fw-semibold px-3 w-100 w-lg-auto
+                    {{ request()->is('login') ? 'text-success border border-success' : '' }}"
+                                href="{{ route('login') }}">
+                                Login
+                            </a>
+                        @endauth
+                    </div>
                 </li>
             </ul>
+
         </div>
     </div>
 </nav>

@@ -410,8 +410,8 @@ Route::middleware([
             });
 
         // ✅ Halaman detail varietas
-        Route::get('varietas/{id}/detail', [VarietasController::class, 'show'])
-            ->name('varietas.show');
+        // Route::get('varietas/{id}/detail', [VarietasController::class, 'show'])
+        //     ->name('varietas.show');
     });
 
 

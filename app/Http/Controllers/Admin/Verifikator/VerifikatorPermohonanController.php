@@ -95,7 +95,7 @@ public function dashboard(Request $request)
     $summaryQuery->getQuery()->orders = null;
 
     // data tabel dengan pagination
-    $permohonan = $query->paginate(2)->withQueryString();
+    $permohonan = $query->paginate(10)->withQueryString();
 
     // ringkasan status (berdasar data ter-filter, bukan semua)
     $statusCounts = $summaryQuery

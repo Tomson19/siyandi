@@ -169,6 +169,14 @@
   background-color: #157347 !important;
 }
 
-/* ===================== */
-/* ✅ END OF CLEAN FILE */
-/* ===================== */
+/* width tombol auth: full di mobile, auto di desktop */
+.w-lg-auto {
+  width: auto;
+}
+
+@media (max-width: 991.98px) {
+  /* untuk jaga-jaga, pastikan full di mobile */
+  .navbar .nav-item .btn.w-100 {
+    width: 100%;
+  }
+}

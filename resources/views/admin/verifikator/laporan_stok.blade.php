@@ -3,61 +3,15 @@
 @section('title', 'Laporan Stok Benih')
 
 @section('content')
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/admin/verifikator/laporan-stock.css') }}">
+@endpush
+<style>
+    body{
+        margin-top: -70px;
+    }
+</style>
     <div class="container py-4">
-
-
-        {{-- ===================== CUSTOM STYLE RINGAN ===================== --}}
-        <style>
-            /* Offset jika ada header fixed di layout utama */
-            body {
-                margin-top: -70px;
-            }
-
-            .page-header-line {
-                width: 220px;
-                height: 3px;
-                margin: 0.35rem auto 0;
-                border-radius: 999px;
-                background: linear-gradient(90deg, #0d6efd, #20c997);
-            }
-
-            .summary-card {
-                transition: transform 0.15s ease, box-shadow 0.15s ease;
-            }
-
-            .summary-card:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
-            }
-
-            .summary-icon {
-                width: 34px;
-                height: 34px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 999px;
-                background: rgba(13, 110, 253, 0.06);
-            }
-
-            .card-section-header {
-                font-size: .9rem;
-                text-transform: uppercase;
-                letter-spacing: .06em;
-            }
-
-            .filter-chip-label {
-                font-size: .75rem;
-                text-transform: uppercase;
-                letter-spacing: .08em;
-            }
-
-            @media (max-width: 575.98px) {
-                .summary-card h4 {
-                    font-size: 1rem;
-                }
-            }
-        </style>
 
         {{-- ===================== HEADER ===================== --}}
         <div class="mb-4 text-center">
