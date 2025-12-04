@@ -269,6 +269,14 @@ Route::middleware(['auth', 'role:admin_verifikator'])
 
                 Route::delete('pengaduan/{pengaduan}', [PengaduanController::class, 'destroy'])
                     ->name('pengaduan.destroy');
+                
+                // 📤 Export Pengaduan (Excel & PDF)
+                Route::get('pengaduan/export-excel', [PengaduanController::class, 'exportExcel'])
+                    ->name('pengaduan.export_excel');
+
+                Route::get('pengaduan/export-pdf', [PengaduanController::class, 'exportPdf'])
+                    ->name('pengaduan.export_pdf');
+
 
                 // Pembinaan Calon Penangkar
                 Route::get('/pembinaan', [PembinaanPenangkarAdminController::class, 'index'])

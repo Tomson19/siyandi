@@ -7,6 +7,11 @@ use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+// Tambahan untuk PDF & Excel
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PengaduanExport;
+
 class PengaduanController extends Controller
 {
     /**
@@ -69,6 +74,88 @@ class PengaduanController extends Controller
         $from   = $request->query('from');
         $to     = $request->query('to');
 
+        $query = $this->buildFilteredQuery($search, $from, $to);
+
+        $pengaduanList = $query
+            ->orderBy('created_at', 'desc')
+            ->paginate(5)
+            ->withQueryString();
+
+        $total = Pengaduan::count();
+
+        return view('admin.verifikator.pengaduan.index', compact(
+            'pengaduanList',
+            'search',
+            'from',
+            'to',
+            'total'
+        ));
+    }
+
+    /**
+     * Export PDF daftar pengaduan (dengan filter yang sama seperti index).
+     */
+    public function exportPdf(Request $request)
+    {
+        $search = $request->query('q');
+        $from   = $request->query('from');
+        $to     = $request->query('to');
+
+        $query = $this->buildFilteredQuery($search, $from, $to);
+
+        // Ambil semua data (tanpa pagination)
+        $pengaduanList = $query
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('admin.verifikator.pengaduan.export_pdf', [
+            'pengaduanList' => $pengaduanList,
+            'search'        => $search,
+            'from'          => $from,
+            'to'            => $to,
+        ])->setPaper('a4', 'portrait'); // bisa diubah ke landscape kalau perlu
+
+        $filename = 'pengaduan_' . now()->format('Ymd_His') . '.pdf';
+
+        return $pdf->download($filename);
+    }
+
+    /**
+     * Export Excel daftar pengaduan (dengan filter yang sama seperti index).
+     */
+    public function exportExcel(Request $request)
+    {
+        $search = $request->query('q');
+        $from   = $request->query('from');
+        $to     = $request->query('to');
+
+        $filename = 'pengaduan_' . now()->format('Ymd_His') . '.xlsx';
+
+        // PengaduanExport akan kita buat di app/Exports/PengaduanExport.php
+        return Excel::download(new PengaduanExport($search, $from, $to), $filename);
+    }
+
+    /**
+     * (Opsional) Hapus pengaduan kalau mau.
+     */
+    public function destroy(Pengaduan $pengaduan)
+    {
+        if ($pengaduan->gambar_path && Storage::disk('public')->exists($pengaduan->gambar_path)) {
+            Storage::disk('public')->delete($pengaduan->gambar_path);
+        }
+
+        $pengaduan->delete();
+
+        return redirect()
+            ->route('admin.verifikator.pengaduan.index')
+            ->with('success', 'Pengaduan berhasil dihapus.');
+    }
+
+    /**
+     * Helper: build query dengan filter yang sama (dipakai index, PDF, Excel).
+     */
+    protected function buildFilteredQuery(?string $search, ?string $from, ?string $to)
+    {
         $query = Pengaduan::query();
 
         if ($search) {
@@ -88,35 +175,6 @@ class PengaduanController extends Controller
             $query->whereDate('created_at', '<=', $to);
         }
 
-        $pengaduanList = $query
-            ->orderBy('created_at', 'desc')
-            ->paginate(5)
-            ->withQueryString();
-
-        $total = Pengaduan::count();
-
-        return view('admin.verifikator.pengaduan.index', compact(
-            'pengaduanList',
-            'search',
-            'from',
-            'to',
-            'total'
-        ));
-    }
-
-    /**
-     * (Opsional) Hapus pengaduan kalau mau.
-     */
-    public function destroy(Pengaduan $pengaduan)
-    {
-        if ($pengaduan->gambar_path && Storage::disk('public')->exists($pengaduan->gambar_path)) {
-            Storage::disk('public')->delete($pengaduan->gambar_path);
-        }
-
-        $pengaduan->delete();
-
-        return redirect()
-            ->route('admin.verifikator.pengaduan.index')
-            ->with('success', 'Pengaduan berhasil dihapus.');
+        return $query;
     }
 }

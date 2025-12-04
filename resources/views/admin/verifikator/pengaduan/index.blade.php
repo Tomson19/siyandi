@@ -5,11 +5,11 @@
 @endphp
 
 @section('content')
-<style>
-    body{
-        margin-top: -70px;
-    }
-</style>
+    <style>
+        body {
+            margin-top: -70px;
+        }
+    </style>
     <div class="container-fluid py-3">
 
         {{-- HEADER --}}
@@ -37,11 +37,8 @@
                     <label class="form-label small text-muted mb-1">Cari Nama / NIK / No HP / Isi Pengaduan</label>
                     <div class="input-group input-group-sm">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text"
-                               name="q"
-                               class="form-control"
-                               placeholder="Ketik kata kunci..."
-                               value="{{ $search }}">
+                        <input type="text" name="q" class="form-control" placeholder="Ketik kata kunci..."
+                            value="{{ $search }}">
                     </div>
                 </div>
 
@@ -59,13 +56,30 @@
                     <button type="submit" class="btn btn-sm btn-outline-secondary w-100 mb-1">
                         Terapkan
                     </button>
-                    <a href="{{ route('admin.verifikator.pengaduan.index') }}"
-                       class="btn btn-sm btn-light w-100">
+                    <a href="{{ route('admin.verifikator.pengaduan.index') }}" class="btn btn-sm btn-light w-100">
                         Reset
                     </a>
                 </div>
             </div>
         </form>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0">Daftar Pengaduan</h4>
+
+            <div class="btn-group" role="group" aria-label="Export">
+                <div class="me-1">
+                <a href="{{ route('admin.verifikator.pengaduan.export_excel', request()->only(['q', 'from', 'to'])) }}"
+                    class="btn btn-sm btn-success">
+                    <i class="bi bi-file-earmark-excel"></i> Export Excel
+                </a>
+                </div>
+                <div>
+                <a href="{{ route('admin.verifikator.pengaduan.export_pdf', request()->only(['q', 'from', 'to'])) }}"
+                    class="btn btn-sm btn-danger">
+                    <i class="bi bi-file-earmark-pdf"></i> Export PDF
+                </a>
+            </div>
+            </div>
+        </div>
 
         {{-- TABEL --}}
         <div class="card border-0 shadow-sm">
@@ -105,9 +119,8 @@
                                     </td>
                                     <td class="text-center">
                                         @if ($row->gambar_path && Storage::disk('public')->exists($row->gambar_path))
-                                            <a href="{{ Storage::url($row->gambar_path) }}"
-                                               target="_blank"
-                                               class="btn btn-sm btn-outline-primary">
+                                            <a href="{{ Storage::url($row->gambar_path) }}" target="_blank"
+                                                class="btn btn-sm btn-outline-primary">
                                                 Lihat Gambar
                                             </a>
                                         @else
@@ -116,8 +129,8 @@
                                     </td>
                                     <td class="text-center">
                                         <form action="{{ route('admin.verifikator.pengaduan.destroy', $row->id) }}"
-                                              method="POST"
-                                              onsubmit="return confirm('Yakin ingin menghapus pengaduan ini?')">
+                                            method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus pengaduan ini?')">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-outline-danger">

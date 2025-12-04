@@ -463,57 +463,71 @@
 @endauth
 
 @push('scripts')
-    <script>
-        (function() {
-            const sidebar = document.getElementById('app-sidebar');
-            const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
-            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-            const sidebarNav = document.getElementById('appSidebarNav'); // <-- baru
+<script>
+(function() {
+    const sidebar        = document.getElementById('app-sidebar');
+    const sidebarCloseBtn= document.getElementById('sidebarCloseBtn');
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const sidebarNav     = document.getElementById('appSidebarNav');
+    const sidebarBackdrop= document.getElementById('sidebarBackdrop');
 
-            // === SIMPAN & RESTORE SCROLL SIDEBAR ===
-            if (sidebarNav) {
-                // Restore posisi scroll saat halaman diload
-                const savedScroll = sessionStorage.getItem('sidebarScrollTop'); // bisa pakai localStorage juga
-                if (savedScroll !== null) {
-                    sidebarNav.scrollTop = parseInt(savedScroll, 10) || 0;
-                }
+    // === SIMPAN & RESTORE SCROLL SIDEBAR ===
+    if (sidebarNav) {
+        const savedScroll = sessionStorage.getItem('sidebarScrollTop');
+        if (savedScroll !== null) {
+            sidebarNav.scrollTop = parseInt(savedScroll, 10) || 0;
+        }
+        sidebarNav.addEventListener('scroll', () => {
+            sessionStorage.setItem('sidebarScrollTop', sidebarNav.scrollTop);
+        });
+    }
 
-                // Simpan posisi scroll tiap user scroll
-                sidebarNav.addEventListener('scroll', () => {
-                    sessionStorage.setItem('sidebarScrollTop', sidebarNav.scrollTop);
-                });
-            }
-            // === END SIMPAN & RESTORE SCROLL SIDEBAR ===
+    function openSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.add('sidebar-open');
+        sidebarBackdrop?.classList.add('show');
+    }
 
-            // Close sidebar on mobile
-            sidebarCloseBtn?.addEventListener('click', () => sidebar?.classList.remove('sidebar-open'));
+    function closeSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.remove('sidebar-open');
+        sidebarBackdrop?.classList.remove('show');
+    }
 
-            // Toggle sidebar on mobile
-            sidebarToggleBtn?.addEventListener('click', e => {
-                e.stopPropagation();
-                sidebar?.classList.toggle('sidebar-open');
-            });
+    sidebarCloseBtn?.addEventListener('click', () => closeSidebar());
 
-            // Click di luar sidebar -> tutup (mobile)
-            document.addEventListener('click', e => {
-                if (!sidebar || window.innerWidth >= 992) return;
-                if (!sidebar.classList.contains('sidebar-open')) return;
+    sidebarToggleBtn?.addEventListener('click', e => {
+        e.stopPropagation();
+        if (sidebar.classList.contains('sidebar-open')) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    });
 
-                const clickInside = sidebar.contains(e.target);
-                const clickToggle = sidebarToggleBtn && sidebarToggleBtn.contains(e.target);
+    // Klik backdrop -> tutup
+    sidebarBackdrop?.addEventListener('click', () => closeSidebar());
 
-                if (!clickInside && !clickToggle) {
-                    sidebar.classList.remove('sidebar-open');
-                }
-            });
+    // Klik di luar sidebar (mobile) -> tutup
+    document.addEventListener('click', e => {
+        if (!sidebar || window.innerWidth >= 992) return;
+        if (!sidebar.classList.contains('sidebar-open')) return;
 
-            // Esc untuk tutup sidebar (mobile)
-            document.addEventListener('keydown', e => {
-                if (e.key === 'Escape') {
-                    sidebar?.classList.remove('sidebar-open');
-                }
-            });
-        })();
-    </script>
+        const clickInside = sidebar.contains(e.target);
+        const clickToggle = sidebarToggleBtn && sidebarToggleBtn.contains(e.target);
+
+        if (!clickInside && !clickToggle) {
+            closeSidebar();
+        }
+    });
+
+    // Esc untuk tutup sidebar (mobile)
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            closeSidebar();
+        }
+    });
+})();
+</script>
 @endpush
 

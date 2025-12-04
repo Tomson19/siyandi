@@ -38,7 +38,7 @@ class PenangkarExport implements FromCollection, WithHeadings, WithMapping, Shou
             'Sertifikat Sandar/Izin Usaha Prod. Benih Nomor & Tanggal',
             'Luas Areal (Ha)',
             'Jumlah Sertifikasi Benih Tahun Berjalan(Batang)',
-            'Jalan/Tempat',
+            'Alamat',
             'Desa/Kelurahan',
             'Kecamatan',
             'Kabupaten',

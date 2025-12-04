@@ -1,5 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top shadow-sm">
     <div class="container-fluid">
+        @auth
+            {{-- Tombol toggle sidebar (mobile) --}}
+            <button class="btn btn-light btn-sm d-lg-none me-2" id="sidebarToggleBtn">
+                <i class="bi bi-list"></i>
+            </button>
+        @endauth
         {{-- LOGO / HOME --}}
         @php
             use Illuminate\Support\Facades\Auth;
@@ -110,7 +116,8 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Areal Potensi Budidaya</a></li>
                         <li><a class="dropdown-item" href="{{ route('peta.index') }}">Pelepasan Varietas</a></li>
-                        <li><a class="dropdown-item" href="{{ route('peta.kbs.index') }}">Kebun Benih Sumber</a></li>
+                        <li><a class="dropdown-item" href="{{ route('peta.kbs.index') }}">Kebun Benih Sumber (KBS)</a>
+                        </li>
                         <li><a class="dropdown-item" href="{{ route('peta.penangkar.index') }}">Penangkar</a></li>
                         <li>
                             <a class="dropdown-item" href="{{ route('program_kegiatan.public') }}">
@@ -135,15 +142,36 @@
                             </a>
                         </li>
 
-                        <li>
-                            <a class="dropdown-item {{ request()->is('layanan/permohonan-benih') ? 'active text-success fw-bold' : '' }}"
-                                href="{{ route('pemohon.permohonan.index') }}">
-                                Permohonan Benih
-                            </a>
-                        </li>
+                        {{-- TAMPIL UNTUK GUEST (BELUM LOGIN) --}}
+                        @guest
+                            <li>
+                                <a class="dropdown-item {{ request()->is('layanan/permohonan-benih') ? 'active text-success fw-bold' : '' }}"
+                                    href="{{ route('pemohon.permohonan.index') }}">
+                                    Permohonan Benih
+                                </a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ route('pemohon.pembinaan-kbs.index') }}">Usulan Pembinaan
+                                    Calon KBS</a></li>
+                            <li><a class="dropdown-item" href="{{ route('pemohon.pembinaan.index') }}">Usulan Pembinaan
+                                    Calon Penangkar</a></li>
+                        @endguest
 
-                        <li><a class="dropdown-item" href="#">Pembinaan Calon KBS</a></li>
-                        <li><a class="dropdown-item" href="#">Pembinaan Calon Penangkar</a></li>
+                        {{-- TAMPIL UNTUK USER LOGIN DENGAN ROLE "pemohon" --}}
+                        @auth
+                            @role('pemohon')
+                                <li>
+                                    <a class="dropdown-item {{ request()->is('layanan/permohonan-benih') ? 'active text-success fw-bold' : '' }}"
+                                        href="{{ route('pemohon.permohonan.index') }}">
+                                        Permohonan Benih
+                                    </a>
+                                </li>
+                                <li><a class="dropdown-item" href="{{ route('pemohon.pembinaan-kbs.index') }}">Usulan Pembinaan
+                                        Calon KBS</a></li>
+                                <li><a class="dropdown-item" href="{{ route('pemohon.pembinaan.index') }}">Usulan Pembinaan
+                                        Calon Penangkar</a></li>
+                            @endrole
+                        @endauth
+
                     </ul>
                 </li>
 

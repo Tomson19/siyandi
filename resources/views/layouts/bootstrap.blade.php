@@ -32,7 +32,7 @@
       margin: 0;
       background-color: #f8f9fa;
       padding-top: 56px; /* tinggi navbar Bootstrap */
-  overflow-x: hidden;
+      overflow-x: hidden;
     }
 
     /* Wrapper utama untuk sidebar + konten */
@@ -77,6 +77,8 @@
     {{-- Sidebar (tampil kalau user login) --}}
     @auth
       @include('partials.sidebar')
+      {{-- Backdrop untuk mobile sidebar --}}
+      <div id="sidebarBackdrop" class="sidebar-backdrop d-lg-none"></div>
     @endauth
 
     {{-- Konten utama halaman --}}

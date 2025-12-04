@@ -11,13 +11,14 @@
     <div class="container py-4">
 
         {{-- HEADER --}}
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3 gap-2">
             <div>
                 <h5 class="fw-bold mb-1 text-primary text-uppercase" style="letter-spacing: .05em;">
                     <i class="bi bi-journal-text me-1"></i> Daftar Permohonan Benih
                 </h5>
             </div>
-            <div>
+
+            <div class="d-grid d-sm-inline-block">
                 <button type="button" class="btn btn-primary btn-sm shadow-sm rounded-pill px-3" data-bs-toggle="modal"
                     data-bs-target="#modalCreatePermohonan">
                     <i class="bi bi-plus-circle me-1"></i> Permohonan Baru
@@ -55,26 +56,30 @@
                         Anda belum memiliki permohonan.
                     </div>
                 @else
-                    <div class="d-flex justify-content-between align-items-center mb-2">
+                    {{-- Info atas tabel --}}
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-2 gap-1">
                         <span class="small text-muted">
                             Total permohonan: <strong>{{ $permohonan->count() }}</strong>
                         </span>
                     </div>
 
-                    <div class="table-wrapper">
+                    {{-- TABLE RESPONSIVE WRAPPER --}}
+                    <div class="table-wrapper table-responsive">
                         <table class="table table-hover align-middle text-center small mb-0" id="permohonanTable">
                             <thead class="table-light align-middle text-uppercase">
                                 <tr>
                                     <th style="width: 4%;">No</th>
-                                    <th style="width: 18%;">Nama Pemohon</th>
-                                    <th style="width: 15%;">Jenis Tanaman</th>
-                                    <th style="width: 10%;">Jenis Benih</th>
-                                    <th style="width: 8%;">Jumlah</th>
-                                    <th style="width: 12%;">Status Utama</th>
-                                    <th style="width: 10%;">Tipe Permohonan</th>
-                                    <th style="width: 13%;">Status Pembayaran</th>
-                                    <th style="width: 10%;">Status Pengambilan</th>
-                                    <th style="width: 10%;">Aksi</th> {{-- kalau nggak perlu aksi, hapus kolom ini --}}
+                                    <th style="width: 18%;" class="text-nowrap">Nama Pemohon</th>
+                                    <th style="width: 15%;" class="text-nowrap d-none d-md-table-cell">Jenis <br>Tanaman</th>
+                                    <th style="width: 10%;" class="text-nowrap d-none d-lg-table-cell">Jenis <br>Benih</th>
+                                    <th style="width: 8%;" class="text-nowrap">Jumlah</th>
+                                    <th style="width: 12%;" class="text-nowrap d-none d-md-table-cell">Status <br>Utama</th>
+                                    <th style="width: 10%;" class="text-nowrap d-none d-lg-table-cell">Tipe <br>Permohonan</th>
+                                    <th style="width: 13%;" class="text-nowrap d-none d-lg-table-cell">Status <br> Pembayaran
+                                    </th>
+                                    <th style="width: 10%;" class="text-nowrap d-none d-md-table-cell">Status <br>Pengambilan
+                                    </th>
+                                    <th style="width: 10%;" class="text-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -131,25 +136,45 @@
                                         {{-- No --}}
                                         <td>{{ $index + 1 }}</td>
 
-                                        {{-- Nama Pemohon --}}
-                                        <td>
+                                        {{-- Nama Pemohon (tetap tampil di semua device) --}}
+                                        <td class="text-start">
                                             <div class="fw-semibold text-uppercase" style="font-size: .78rem;">
                                                 {{ $item->nama }}
                                             </div>
                                             <div class="text-muted small">
                                                 NIK: {{ $item->nik }}
                                             </div>
+
+                                            {{-- Info penting yang disembunyikan dari kolom lain di mobile, bisa dirangkum di sini --}}
+                                            <div class="mt-1 d-md-none small">
+                                                <div>
+                                                    <span class="text-muted">Tanaman:</span>
+                                                    <strong>{{ strtoupper($item->jenisTanaman->nama_tanaman ?? '-') }}</strong>
+                                                </div>
+                                                <div>
+                                                    <span class="text-muted">Status:</span>
+                                                    <span class="badge {{ $statusClass }} small">
+                                                        {{ $item->status }}
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-muted">Tipe:</span>
+                                                    <span class="badge {{ $tipeClass }} small">
+                                                        {{ $item->tipe_pembayaran ?? '-' }}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </td>
 
-                                        {{-- Jenis Tanaman --}}
-                                        <td>
+                                        {{-- Jenis Tanaman (desktop / md ke atas) --}}
+                                        <td class="d-none d-md-table-cell">
                                             <span class="fw-semibold text-dark" style="font-size: .78rem;">
                                                 {{ strtoupper($item->jenisTanaman->nama_tanaman ?? '-') }}
                                             </span>
                                         </td>
 
-                                        {{-- Jenis Benih --}}
-                                        <td>
+                                        {{-- Jenis Benih (lg ke atas) --}}
+                                        <td class="d-none d-lg-table-cell">
                                             <span class="badge bg-light text-dark border small">
                                                 {{ $item->jenis_benih ?? '-' }}
                                             </span>
@@ -158,22 +183,22 @@
                                         {{-- Jumlah --}}
                                         <td>{{ $item->jumlah_tanaman }}</td>
 
-                                        {{-- Status Utama --}}
-                                        <td>
+                                        {{-- Status Utama (md ke atas) --}}
+                                        <td class="d-none d-md-table-cell">
                                             <span class="badge {{ $statusClass }} small px-3">
                                                 {{ $item->status }}
                                             </span>
                                         </td>
 
-                                        {{-- Tipe Permohonan (Gratis / Berbayar) --}}
-                                        <td>
+                                        {{-- Tipe Permohonan (Gratis / Berbayar) - lg ke atas --}}
+                                        <td class="d-none d-lg-table-cell">
                                             <span class="badge {{ $tipeClass }} small px-3">
                                                 {{ $item->tipe_pembayaran ?? '-' }}
                                             </span>
                                         </td>
 
-                                        {{-- Status Pembayaran --}}
-                                        <td>
+                                        {{-- Status Pembayaran - lg ke atas --}}
+                                        <td class="d-none d-lg-table-cell">
                                             @if ($item->tipe_pembayaran === 'Berbayar')
                                                 <span class="badge {{ $statusPembayaranClass }} small px-3">
                                                     {{ $item->status_pembayaran ?? '–' }}
@@ -183,8 +208,8 @@
                                             @endif
                                         </td>
 
-                                        {{-- Status Pengambilan --}}
-                                        <td>
+                                        {{-- Status Pengambilan - md ke atas --}}
+                                        <td class="d-none d-md-table-cell">
                                             <span class="badge {{ $statusAmbilClass }} small px-3">
                                                 {{ $item->status_pengambilan ?? '-' }}
                                             </span>
@@ -192,26 +217,29 @@
 
                                         {{-- Aksi --}}
                                         <td>
-                                            <a href="{{ route('pemohon.permohonan.show', $item->id) }}"
-                                                class="btn btn-outline-primary btn-sm rounded-pill px-3 mb-1">
-                                                <i class="bi bi-eye me-1"></i> Detail
-                                            </a>
+                                            <div class="d-flex flex-column gap-1">
+                                                <a href="{{ route('pemohon.permohonan.show', $item->id) }}"
+                                                    class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                                    <i class="bi bi-eye me-1"></i> Detail
+                                                </a>
 
-                                            <button type="button"
-                                                class="btn btn-outline-warning btn-sm rounded-pill px-3 mb-1 btn-edit-permohonan {{ $isLocked ? 'disabled' : '' }}"
-                                                data-bs-toggle="modal" data-bs-target="#modalEditPermohonan"
-                                                data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
-                                                data-nik="{{ $item->nik }}" data-alamat="{{ $item->alamat }}"
-                                                data-no_telp="{{ $item->no_telp }}"
-                                                data-jenis_tanaman_id="{{ $item->jenis_tanaman_id }}"
-                                                data-jenis_benih="{{ $item->jenis_benih }}"
-                                                data-tipe_pembayaran="{{ $item->tipe_pembayaran }}"
-                                                data-jumlah_tanaman="{{ $item->jumlah_tanaman }}"
-                                                data-luas_area="{{ $item->luas_area }}"
-                                                data-latitude="{{ $item->latitude }}"
-                                                data-longitude="{{ $item->longitude }}" {{ $isLocked ? 'disabled' : '' }}>
-                                                <i class="bi bi-pencil-square me-1"></i> Edit
-                                            </button>
+                                                <button type="button"
+                                                    class="btn btn-outline-warning btn-sm rounded-pill px-3 btn-edit-permohonan {{ $isLocked ? 'disabled' : '' }}"
+                                                    data-bs-toggle="modal" data-bs-target="#modalEditPermohonan"
+                                                    data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
+                                                    data-nik="{{ $item->nik }}" data-alamat="{{ $item->alamat }}"
+                                                    data-no_telp="{{ $item->no_telp }}"
+                                                    data-jenis_tanaman_id="{{ $item->jenis_tanaman_id }}"
+                                                    data-jenis_benih="{{ $item->jenis_benih }}"
+                                                    data-tipe_pembayaran="{{ $item->tipe_pembayaran }}"
+                                                    data-jumlah_tanaman="{{ $item->jumlah_tanaman }}"
+                                                    data-luas_area="{{ $item->luas_area }}"
+                                                    data-latitude="{{ $item->latitude }}"
+                                                    data-longitude="{{ $item->longitude }}"
+                                                    {{ $isLocked ? 'disabled' : '' }}>
+                                                    <i class="bi bi-pencil-square me-1"></i> Edit
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -223,6 +251,7 @@
             </div>
         </div>
     </div>
+
 
     {{-- ===========================
          MODAL: CREATE PERMOHONAN
@@ -423,7 +452,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label small fw-semibold">Alamat Lengkap</label>
-                                    <input type="text" name="alamat" id="edit_alamat" class="form-control form-control-sm shadow-sm" required>
+                                    <input type="text" name="alamat" id="edit_alamat"
+                                        class="form-control form-control-sm shadow-sm" required>
                                 </div>
                             </div>
 

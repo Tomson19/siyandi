@@ -75,7 +75,7 @@
                 <th style="width:16%;">Sertifikat Sandar / Izin <br>Usaha Prod. Benih Nomor &amp; Tanggal</th>
                 <th style="width:8%;">Luas<br>Areal (Ha)</th>
                 <th style="width:8%;">Jumlah Sertifikasi Benih<br>Tahun Berjalan(Batang)</th>
-                <th style="width:12%;">Jalan / Tempat</th>
+                <th style="width:12%;">Alamat</th>
                 <th style="width:8%;">Desa/Kelurahan</th>
                 <th style="width:8%;">Kecamatan</th>
                 <th style="width:8%;">Kabupaten</th>
