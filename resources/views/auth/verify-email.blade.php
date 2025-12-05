@@ -13,10 +13,14 @@
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
 
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
+            <div class="flex flex-col items-start">
+                <x-primary-button id="resend-button" disabled>
+                    {{ __('Kirim Ulang Verifikasi Email') }}
                 </x-primary-button>
+
+                <p id="countdown-text" class="mt-2 text-xs text-gray-500">
+                    Anda dapat mengirim ulang dalam <span id="countdown-timer">02:00</span>
+                </p>
             </div>
         </form>
 
@@ -28,4 +32,49 @@
             </button>
         </form>
     </div>
+
+    {{-- Script hitung mundur --}}
+    <script>
+        (function () {
+            const RESEND_DELAY = 120; // detik
+            let remaining = RESEND_DELAY;
+
+            const btn = document.getElementById('resend-button');
+            const countdownText = document.getElementById('countdown-text');
+            const countdownTimer = document.getElementById('countdown-timer');
+
+            if (!btn || !countdownText || !countdownTimer) return;
+
+            function formatTime(sec) {
+                const m = Math.floor(sec / 60);
+                const s = sec % 60;
+                const mm = String(m).padStart(2, '0');
+                const ss = String(s).padStart(2, '0');
+                return `${mm}:${ss}`;
+            }
+
+            function updateCountdown() {
+                if (remaining <= 0) {
+                    btn.removeAttribute('disabled');
+                    countdownText.textContent = 'Anda dapat mengirim ulang sekarang.';
+                    return;
+                }
+
+                btn.setAttribute('disabled', 'disabled');
+                countdownTimer.textContent = formatTime(remaining);
+                remaining--;
+            }
+
+            // Jalankan pertama kali
+            updateCountdown();
+
+            // Update setiap 1 detik
+            const intervalId = setInterval(() => {
+                updateCountdown();
+                if (remaining < 0) {
+                    clearInterval(intervalId);
+                }
+            }, 1000);
+        })();
+    </script>
 </x-guest-layout>
