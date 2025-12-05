@@ -149,7 +149,7 @@ Route::middleware(['auth', 'role:admin_super'])
             ->name('users.update');
     });
 
-Route::middleware(['auth', 'role:admin_verifikator|admin_manager'])
+Route::middleware(['auth', 'role:admin_verifikator|admin_manager|admin_operator'])
     ->prefix('admin')
     ->as('admin.')
     ->group(function () {

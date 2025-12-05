@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
             'admin_upt_sertifikasi' => 'admin.upt_sertifikasi.penangkar.index',
             'admin_manager' => 'admin.verifikator.laporan_penjualan',
             'pemohon' => 'pemohon.dashboard',
-            'admin_bidang_produksi'  => 'admin.produksi.dashboard',
+            'admin_bidang_produksi'  => 'admin.program_kegiatan.index',
         ];
 
         // Jika role ada di daftar utama → redirect langsung
