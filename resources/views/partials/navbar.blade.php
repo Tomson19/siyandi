@@ -138,7 +138,7 @@
                         <li>
                             <a class="dropdown-item {{ request()->is('data-benih') ? 'active text-success fw-bold' : '' }}"
                                 href="{{ route('public.benih.index') }}">
-                                Stock Yang Tersedia
+                                Ketersediaan Benih
                             </a>
                         </li>
 

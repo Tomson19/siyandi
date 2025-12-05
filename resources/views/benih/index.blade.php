@@ -8,7 +8,7 @@
     {{-- HEADER --}}
     <div class="text-center mb-5">
         <h2 class="fw-bold text-success mb-2">
-            <i class="bi bi-box-seam me-2"></i> Data Stok Benih Tersedia
+            <i class="bi bi-box-seam me-2"></i> Data Ketersediaan Benih
         </h2>
         <p class="text-muted mb-0 small">
             Pilih jenis benih yang tersedia dan ajukan permohonan langsung secara online.
