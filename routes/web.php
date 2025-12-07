@@ -30,7 +30,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\Super\UserManagementController;
 use App\Http\Controllers\Admin\Super\DashboardController;
 use App\Http\Controllers\Admin\Verifikator\PeraturanController;
-
+use App\Http\Controllers\BudidayaController;
 
 
 
@@ -86,6 +86,8 @@ Route::get('/peta-penangkar/export/excel', [PetaPenangkarController::class, 'exp
 Route::get('/peta-penangkar/export/pdf', [PetaPenangkarController::class, 'exportPdf'])
     ->name('peta.penangkar.export.pdf');
 
+Route::get('/potensi-budidaya', [BudidayaController::class, 'index'])
+->name('budidaya.index');;
 
 
 Route::get('/peta-kbs', [PetaKbsController::class, 'index'])->name('peta.kbs.index');
