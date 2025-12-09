@@ -87,7 +87,9 @@ Route::get('/peta-penangkar/export/pdf', [PetaPenangkarController::class, 'expor
     ->name('peta.penangkar.export.pdf');
 
 Route::get('/potensi-budidaya', [BudidayaController::class, 'index'])
-->name('budidaya.index');;
+->name('budidaya.index');
+Route::post('/budidaya/export-js', [BudidayaController::class, 'exportFromJs'])
+    ->name('budidaya.export-js');
 
 
 Route::get('/peta-kbs', [PetaKbsController::class, 'index'])->name('peta.kbs.index');
