@@ -405,6 +405,13 @@
                             <span>Pengaduan</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.live-chat.index') }}"
+                            class="nav-link sidebar-link @if (request()->routeIs('admin.live-chat.*')) active @endif">
+                            <i class="bi bi-chat-dots"></i>
+                            <span>Konsultasi</span>
+                        </a>
+                    </li>
                 @endrole
 
                 {{-- Program & Kegiatan (Verifikator + Bidang Produksi) --}}
@@ -463,71 +470,70 @@
 @endauth
 
 @push('scripts')
-<script>
-(function() {
-    const sidebar        = document.getElementById('app-sidebar');
-    const sidebarCloseBtn= document.getElementById('sidebarCloseBtn');
-    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-    const sidebarNav     = document.getElementById('appSidebarNav');
-    const sidebarBackdrop= document.getElementById('sidebarBackdrop');
+    <script>
+        (function() {
+            const sidebar = document.getElementById('app-sidebar');
+            const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+            const sidebarNav = document.getElementById('appSidebarNav');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
-    // === SIMPAN & RESTORE SCROLL SIDEBAR ===
-    if (sidebarNav) {
-        const savedScroll = sessionStorage.getItem('sidebarScrollTop');
-        if (savedScroll !== null) {
-            sidebarNav.scrollTop = parseInt(savedScroll, 10) || 0;
-        }
-        sidebarNav.addEventListener('scroll', () => {
-            sessionStorage.setItem('sidebarScrollTop', sidebarNav.scrollTop);
-        });
-    }
+            // === SIMPAN & RESTORE SCROLL SIDEBAR ===
+            if (sidebarNav) {
+                const savedScroll = sessionStorage.getItem('sidebarScrollTop');
+                if (savedScroll !== null) {
+                    sidebarNav.scrollTop = parseInt(savedScroll, 10) || 0;
+                }
+                sidebarNav.addEventListener('scroll', () => {
+                    sessionStorage.setItem('sidebarScrollTop', sidebarNav.scrollTop);
+                });
+            }
 
-    function openSidebar() {
-        if (!sidebar) return;
-        sidebar.classList.add('sidebar-open');
-        sidebarBackdrop?.classList.add('show');
-    }
+            function openSidebar() {
+                if (!sidebar) return;
+                sidebar.classList.add('sidebar-open');
+                sidebarBackdrop?.classList.add('show');
+            }
 
-    function closeSidebar() {
-        if (!sidebar) return;
-        sidebar.classList.remove('sidebar-open');
-        sidebarBackdrop?.classList.remove('show');
-    }
+            function closeSidebar() {
+                if (!sidebar) return;
+                sidebar.classList.remove('sidebar-open');
+                sidebarBackdrop?.classList.remove('show');
+            }
 
-    sidebarCloseBtn?.addEventListener('click', () => closeSidebar());
+            sidebarCloseBtn?.addEventListener('click', () => closeSidebar());
 
-    sidebarToggleBtn?.addEventListener('click', e => {
-        e.stopPropagation();
-        if (sidebar.classList.contains('sidebar-open')) {
-            closeSidebar();
-        } else {
-            openSidebar();
-        }
-    });
+            sidebarToggleBtn?.addEventListener('click', e => {
+                e.stopPropagation();
+                if (sidebar.classList.contains('sidebar-open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            });
 
-    // Klik backdrop -> tutup
-    sidebarBackdrop?.addEventListener('click', () => closeSidebar());
+            // Klik backdrop -> tutup
+            sidebarBackdrop?.addEventListener('click', () => closeSidebar());
 
-    // Klik di luar sidebar (mobile) -> tutup
-    document.addEventListener('click', e => {
-        if (!sidebar || window.innerWidth >= 992) return;
-        if (!sidebar.classList.contains('sidebar-open')) return;
+            // Klik di luar sidebar (mobile) -> tutup
+            document.addEventListener('click', e => {
+                if (!sidebar || window.innerWidth >= 992) return;
+                if (!sidebar.classList.contains('sidebar-open')) return;
 
-        const clickInside = sidebar.contains(e.target);
-        const clickToggle = sidebarToggleBtn && sidebarToggleBtn.contains(e.target);
+                const clickInside = sidebar.contains(e.target);
+                const clickToggle = sidebarToggleBtn && sidebarToggleBtn.contains(e.target);
 
-        if (!clickInside && !clickToggle) {
-            closeSidebar();
-        }
-    });
+                if (!clickInside && !clickToggle) {
+                    closeSidebar();
+                }
+            });
 
-    // Esc untuk tutup sidebar (mobile)
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            closeSidebar();
-        }
-    });
-})();
-</script>
+            // Esc untuk tutup sidebar (mobile)
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') {
+                    closeSidebar();
+                }
+            });
+        })();
+    </script>
 @endpush
-

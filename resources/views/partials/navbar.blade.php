@@ -114,7 +114,8 @@
                         Data dan Informasi
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ route('budidaya.index') }}">Areal Potensi Budidaya</a></li>
+                        <li><a class="dropdown-item" href="{{ route('budidaya.index') }}">Areal Potensi Budidaya</a>
+                        </li>
                         <li><a class="dropdown-item" href="{{ route('peta.index') }}">Pelepasan Varietas</a></li>
                         <li><a class="dropdown-item" href="{{ route('peta.kbs.index') }}">Kebun Benih Sumber (KBS)</a>
                         </li>
@@ -214,7 +215,6 @@
                             </a>
                         </li>
 
-                        <li><a class="dropdown-item" href="#">Konsultasi</a></li>
                     </ul>
                 </li>
             </ul>

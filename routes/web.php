@@ -31,6 +31,8 @@ use App\Http\Controllers\Admin\Super\UserManagementController;
 use App\Http\Controllers\Admin\Super\DashboardController;
 use App\Http\Controllers\Admin\Verifikator\PeraturanController;
 use App\Http\Controllers\BudidayaController;
+use App\Http\Controllers\LiveChatController;
+use App\Http\Controllers\AdminLiveChatController;
 
 
 
@@ -38,6 +40,28 @@ use App\Http\Controllers\BudidayaController;
 // ========================
 // HALAMAN UTAMA
 // ========================
+
+
+Route::get('/live-chat/status', [LiveChatController::class, 'status'])
+    ->name('live-chat.status');
+
+// API AJAX untuk chat guest
+Route::prefix('live-chat')->group(function () {
+    Route::post('/start', [LiveChatController::class, 'start'])->name('live-chat.start');
+    Route::get('/messages', [LiveChatController::class, 'messages'])->name('live-chat.messages');
+    Route::post('/send', [LiveChatController::class, 'send'])->name('live-chat.send');
+});
+
+Route::middleware(['auth', 'role:admin_verifikator',  'last_seen'])->prefix('admin')->group(function () {
+    Route::get('/live-chat', [AdminLiveChatController::class, 'index'])->name('admin.live-chat.index');
+    Route::get('/live-chat/{consultation}', [AdminLiveChatController::class, 'show'])->name('admin.live-chat.show');
+    Route::get('/admin/live-chat/card', [AdminLiveChatController::class, 'card'])
+        ->name('admin.live-chat.card');
+    // 🔹 endpoint ambil pesan (JSON) untuk polling
+    Route::get('/live-chat/{consultation}/messages', [AdminLiveChatController::class, 'messages'])
+        ->name('admin.live-chat.messages');
+    Route::post('/live-chat/{consultation}/reply', [AdminLiveChatController::class, 'reply'])->name('admin.live-chat.reply');
+});
 
 
 Route::middleware(['auth'])->group(function () {
@@ -87,7 +111,7 @@ Route::get('/peta-penangkar/export/pdf', [PetaPenangkarController::class, 'expor
     ->name('peta.penangkar.export.pdf');
 
 Route::get('/potensi-budidaya', [BudidayaController::class, 'index'])
-->name('budidaya.index');
+    ->name('budidaya.index');
 Route::post('/budidaya/export-js', [BudidayaController::class, 'exportFromJs'])
     ->name('budidaya.export-js');
 
@@ -273,7 +297,7 @@ Route::middleware(['auth', 'role:admin_verifikator'])
 
                 Route::delete('pengaduan/{pengaduan}', [PengaduanController::class, 'destroy'])
                     ->name('pengaduan.destroy');
-                
+
                 // 📤 Export Pengaduan (Excel & PDF)
                 Route::get('pengaduan/export-excel', [PengaduanController::class, 'exportExcel'])
                     ->name('pengaduan.export_excel');

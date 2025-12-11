@@ -47,6 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail // 👈 tambahin i
             'password'          => 'hashed',
             'is_locked'         => 'boolean',
             'locked_at'         => 'datetime',
+            'last_seen_at'      => 'datetime',
         ];
     }
 
